@@ -35,25 +35,16 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref:'quiz',
     }],
-    queries:[{
-        type: mongoose.Schema.Types.ObjectId,
-        ref: 'post',
-    }],
-    suggestion: [{
+    posts:[{
         type: mongoose.Schema.Types.ObjectId,
         ref: 'post',
     }],
     conversations : [{
-        users: [{
+        conversation: {
             type: mongoose.Schema.Types.ObjectId,
-            ref: 'user',
-        }],
-        messages : [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'message',
-        }] 
-    }]
-
+            ref: 'conversation',
+        },
+    }],
 });
 
 const user = mongoose.model('user',userSchema);
