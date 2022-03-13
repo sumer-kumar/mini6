@@ -24,6 +24,10 @@ const quizSchema = new mongoose.Schema({
             type: Number,
         }]
     }],
+    author: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'user',
+    },
     tags: [{
         type: String,
     }],
@@ -42,9 +46,14 @@ const quizSchema = new mongoose.Schema({
         time: {
             type: Date,
         },
-    }],
+    }],    
+    reviews: {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: 'review',
+    },
+
 });
 
 
-const quiz = mongoose.model('quiz',quizSchema);
-export default quiz;
+const Quiz = mongoose.model('quiz',quizSchema);
+export default Quiz;

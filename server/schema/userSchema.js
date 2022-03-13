@@ -40,6 +40,10 @@ const userSchema = new mongoose.Schema({
         ref: 'post',
     }],
     conversations : [{
+        receiver: {
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'user',
+        },
         conversation: {
             type: mongoose.Schema.Types.ObjectId,
             ref: 'conversation',
@@ -47,6 +51,6 @@ const userSchema = new mongoose.Schema({
     }],
 });
 
-const user = mongoose.model('user',userSchema);
+const User = mongoose.model('user',userSchema);
 
-export default user;
+export default User;

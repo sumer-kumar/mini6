@@ -2,25 +2,20 @@ import Post from '../schema/postSchema.js'
 import User from '../schema/userSchema.js'
 import Comment from '../schema/commentSchema.js'
 import Review from '../schema/reviewSchema.js'
+import Quiz from '../schema/quizSchema.js'
 import { deleteReviewById } from './review_controller.js'
 
-/**
- * post-> createPost
- * get-> getPostById
- * put-> updatePostById
- * delete->deletePostById
- */
 
-export const deletePostById = async (req,res)=>{
+export const deleteQuizById = async (req,res)=>{
     console.log(req.params);
     try{
         const _id = req.params.id;
-        const post = await Post.findOne({_id:_id,author:req.userId});
+        const quiz = await Quiz.findOne({_id:_id,author:req.userId});
 
-        if(post)
-            await deleteReviewById(post.reviews);
+        if(quiz)
+            await deleteReviewById(quiz.reviews);
 
-        await Post.deleteOne({_id:_id,author:req.userId});
+        await Quiz.deleteOne({_id:_id,author:req.userId});
         res.status(200).json({message:'success'});
     }catch(e){
         console.log(e);
@@ -28,12 +23,14 @@ export const deletePostById = async (req,res)=>{
     }
 }
 
-export const updatePostById = async (req,res)=>{
+
+
+export const updateQuizById = async (req,res)=>{
     console.log(req.body);
     console.log(req.params);
     try{
         const _id = req.params.id;
-        const post = await Post.updateOne({_id:_id,author:req.userId},req.body);
+        const quiz = await Quiz.updateOne({_id:_id,author:req.userId},req.body);
         res.status(200).json({message:'success'});
     }catch(e){
         console.log(e);
@@ -42,19 +39,21 @@ export const updatePostById = async (req,res)=>{
 
 }
 
-export const getPostById = async (req,res)=>{
+
+
+export const getQuizById = async (req,res)=>{
 
     console.log(req.params);
 
     try{
         const _id = req.params.id;
 
-        const post = await Post.findById(_id);
+        const quiz = await Quiz.findById(_id).select('-questions.correct_index');
 
-        if(!_id || !post){
+        if(!_id || !quiz){
             return res.status(400).json({error:'could not find anything'});
         }
-        res.status(200).json(post);
+        res.status(200).json(quiz);
 
     }catch(e){
         res.status(400).json({error: e});
@@ -62,22 +61,22 @@ export const getPostById = async (req,res)=>{
 }
 
 
-export const createPost = async (req,res)=>{
+export const createQuiz = async (req,res)=>{
     console.log(req.body);
 
     try{
-        const postExist = await Post.findOne({title:req.body.title});
-        if(postExist){
-            return res.status(400).json({message: 'post already exists'});
+        const quizExist = await Quiz.findOne({title:req.body.title});
+        if(quizExist){
+            return res.status(400).json({message: 'quiz already exists'});
         }
-        let post = new Post(req.body);
-        post.author = req.userId;
+        let quiz = new Quiz(req.body);
+        quiz.author = req.userId;
         
         const review = new Review();
-        post.reviews = review._id;
+        quiz.reviews = review._id;
 
         review.save();
-        await post.save();
+        await quiz.save();
 
         await User.updateOne(
             {
@@ -85,13 +84,13 @@ export const createPost = async (req,res)=>{
             },
             {
                 $addToSet : {
-                    posts: [post._id],
+                    quizes: [quiz._id],
                 }
             }
         );
 
-        console.log(post);
-        res.status(200).json({message: 'post created successfully'});
+        console.log(quiz);
+        res.status(200).json({message: 'quiz created successfully'});
     }catch(e)
     {
         console.log(e);
