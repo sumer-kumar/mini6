@@ -10,6 +10,7 @@ import { JWT_SECRET_KEY } from '../constants.js';
  * delete-> deleteUser
  * get-> getQueriesOfUser
  * get-> getSuggestionsOfUser
+ * put-> updateProfileImage
  */
 export const getSuggestionsOfUser = async (req,res)=>{
     console.log(req.params);
