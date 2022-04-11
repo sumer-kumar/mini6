@@ -1,0 +1,13 @@
+
+
+.selected-option {
+    background-color: aquamarine;
+    border: 1px solid blue;
+    border-radius: 3px;
+}
+
+.not-selected-option {
+    background-color: gainsboro;
+    border: 1px solid grey;
+    border-radius: 3px;
+}
