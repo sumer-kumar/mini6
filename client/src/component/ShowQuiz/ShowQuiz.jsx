@@ -4,52 +4,8 @@ import QuestionBlock from './QuestionBlock';
 /**
  * this quiz object will be coming from api request
  */
-const quizData =
-{
-    "title": "General Quiz",
-    "instructions": "attempt quiz fast",
-    "totalTime": 10,
-    "questions": [
-        {
-            "question": "who is the prime minister of india?",
-            "options": [
-                {
-                    "option": "1). narendra modi",
-                },
-                {
-                    "option": "2). rahul gandhi",
-                },
-                {
-                    "option": "3). pratibha patil ",
-                },
-                {
-                    "option": "4). yogi adityanath",
-                }
-            ],
-            "marks": 1,
-            'correctIndex': 0
-        },
-        {
-            "question": "capital of india?",
-            "options": [
-                {
-                    "option": "1). new delhi",
-                },
-                {
-                    "option": "2). bihar",
-                },
-                {
-                    "option": "3). mumbai",
-                },
-                {
-                    "option": "4). kolkata",
-                }
-            ],
-            "marks": 1,
-            'correctIndex': 0,
-        }
-    ]
-}
+import { quizData } from '../../constants';
+import QuizResult from '../QuizResult/QuizResult';
 
 export default function Quiz() {
 
@@ -87,16 +43,32 @@ export default function Quiz() {
         return ()=>clearInterval(timer);
     });
 
+    const [quizDone,setQuizDone] = useState(false);
+
     const onSubmit = ()=>{
-        console.log(quiz);
+        setQuiz({...quiz,['marksObtained']:calculateMarks()});
         clearInterval(timer);
         alert('result submitted');
+        console.log(quiz.marksObtained);
+        setQuizDone(true);
         /**
          * we will make a post request to the server to check and return the quiz with marks
          */
     }
 
+    const calculateMarks = ()=>{
+        let marks = 0;
+        quiz.questions.forEach((value)=>{
+            marks += value.selectedIndex!==undefined && value.selectedIndex===value.correctIndex?value.marks:0;
+        });
+        return marks;
+    }
+
     return (
+        <>
+        {
+            quizDone===true?<QuizResult quiz={quiz}/>:
+
         <div className='container'>
             <h3>{`Remaining Time : ${seconds} sec`}</h3>
             <h1>{quiz.title}</h1>
@@ -108,7 +80,7 @@ export default function Quiz() {
                 quiz.questions.map((value, index) => {
                     return (
                         <div key={index}>
-                            <QuestionBlock question={value} index={index} setQuiz={setQuiz} select_option={select_option} />
+                            <QuestionBlock key={index} question={value} index={index} setQuiz={setQuiz} select_option={select_option} />
                         </div>
                     )
                 })
@@ -118,9 +90,11 @@ export default function Quiz() {
                 <div className="text-center">
                     <button type="button" onClick={onSubmit} className="btn btn-outline-primary">Submit Quiz</button>
                 </div>
-
             </div>
 
         </div>
+        }
+
+        </>
     )
 }

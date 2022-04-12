@@ -5,7 +5,7 @@ import { getMessageByConversationId, sendMessage } from '../controllers/message_
 import { createPost, deletePostById, getPostById, updatePostById } from '../controllers/post_controller.js';
 import { createQuiz, deleteQuizById, getQuizById, updateQuizById } from '../controllers/quiz_controller.js';
 import { addlike, getReviewById, getReviewByPostId, getReviewByQuizId, removeLike } from '../controllers/review_controller.js';
-import { createUser, deleteUser, follow, getQueriesOfUser, getSuggestionsOfUser, getUserById, login, updateUser } from '../controllers/user_controller.js';
+import { createUser, deleteUser, follow, getQueriesOfUser, getSuggestionsOfUser, getUserById, isAuthenticated, login, updateUser } from '../controllers/user_controller.js';
 import authentication from '../middleware/authentication.js';
 import { uploadMultipleImage } from '../middleware/image_upload.js';
 import upload from '../middleware/upload.js';
@@ -21,6 +21,7 @@ router.put('/updateUser',authentication,updateUser);
 router.delete('/deleteUser',authentication,deleteUser);
 router.get('/getQueriesOfUser/:id',authentication,getQueriesOfUser);
 router.get('/getSuggestionsOfUser/:id',authentication,getSuggestionsOfUser);
+router.get('/isAuthenticated',isAuthenticated);
 
 //post controller
 router.post('/createPost',authentication,createPost);

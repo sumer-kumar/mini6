@@ -13,7 +13,7 @@ export default function QuizQuestionBlock(params) {
       <button onClick={()=>{params.deleteQuestion(params.question)}}>Delete</button>
       {
         params.question.options.map((option,index)=>{
-          return <p key={index}>{`${option.option}${option.isCorrect?' (correct)':''}`}</p>
+          return <p key={index}>{`${index+1}). ${option.option}${option.isCorrect?' (correct)':''}`}</p>
         })
       }
     </div>

@@ -15,7 +15,7 @@ export default function QuizQuestionDisplay(params) {
             return (
                 <div key={value.option}>
                 <div>
-                    <p>{`${value.option}${value.isCorrect?' (correct)':''}`}</p>
+                    <p>{`${index+1}). ${value.option}${value.isCorrect?' (correct)':''}`}</p>
                 </div>
                 <button onClick={()=>{params.deleteOption(value)}}>Delete this option</button>
                 <hr/>

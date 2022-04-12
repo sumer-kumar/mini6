@@ -56,7 +56,7 @@ export default function QuizAddQuestion(params) {
   }
 
   const addOption = () => {
-    option.option = `${options.length + 1}). ${option.option}`;
+    option.option = `${option.option}`;
     options.push(option);
     setOption({ option: "", isCorrect: false });
   }

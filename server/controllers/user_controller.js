@@ -12,6 +12,40 @@ import { JWT_SECRET_KEY } from '../constants.js';
  * get-> getSuggestionsOfUser
  * put-> updateProfileImage
  */
+
+export const isAuthenticated = async (req,res)=>{
+
+    const {authorization} = req.headers;
+    console.log('authentication')
+
+    if(!authorization){
+        return res.status(401).json({isAuthenticated:false});
+    }
+
+    const token = authorization.replace('Bearer ','');
+
+    try {
+        const payload = jwt.verify(token,JWT_SECRET_KEY);
+
+        console.log(`payload : `);
+        console.log(payload);
+
+        const {_id} = payload;
+
+        if(!_id){
+            return res.status(401).json({isAuthenticated:false});
+        }
+        const userId = await User.findById(_id).select('_id');
+        req.userId = userId._id;
+        res.status(200).json({isAuthenticated:true});
+    }
+    catch(err)
+    {
+        console.log(err);
+        return res.status(401).json({isAuthenticated:false});
+    }
+}
+
 export const getSuggestionsOfUser = async (req,res)=>{
     console.log(req.params);
     try {
@@ -146,13 +180,13 @@ export const login = async (req,res)=>{
         const {email,password} = req.body;
         
         if(!email || !password){
-            return res.status(400).json({message: 'enter both email and password'});
+            return res.status(401).json({message: 'enter both email and password'});
         }
 
         const user =await User.findOne({email:email});
 
         if(!user || user.password != password){
-            return res.status(400).json({message: 'email or password is wrong'});
+            return res.status(401).json({message: 'email or password is wrong'});
         }
 
         const token = jwt.sign({_id:user._id},JWT_SECRET_KEY);
