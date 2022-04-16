@@ -1,6 +1,7 @@
 import Post from '../schema/postSchema.js';
 import Review from '../schema/reviewSchema.js';
 import Quiz from '../schema/quizSchema.js'
+import User from '../schema/userSchema.js'
 
 export const deleteReviewById = async (_id)=>{
     try {
@@ -61,8 +62,26 @@ export const getReviewById = async (req,res)=>{
     console.log(req.params);
     try {
         const _id = req.params.id;
-        const review = await Review.findById(_id);
+        const review = await Review.findById(_id).populate('comments');
         res.status(200).json(review);
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({error:e});
+    }
+}
+
+export const getAuthorById = async (req,res)=>{
+
+    try {
+        const _id = req.params.id;
+        
+        const user = await User.findById(_id).select('name photo email');
+
+        if(!_id || !user){
+            return res.status(400).json({error:'count not find anything'});
+        }
+
+        res.status(200).json({author:user});
     } catch (e) {
         console.log(e);
         res.status(400).json({error:e});

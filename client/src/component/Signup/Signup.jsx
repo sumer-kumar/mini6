@@ -1,6 +1,7 @@
 import React from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
+import { signup } from '../../service/user-service';
 
 
 let currdate = new Date();
@@ -9,24 +10,52 @@ export default function Signup() {
 
   const navigate = useNavigate();
 
+  const [selectedImage,setSelectedImage] = useState('');
+
   const [user, setUser] = useState({
-    name: "sumer9",
-    email: "sumer9@gmail.com",
-    password: "12345",
-    category:'student',
+    name: "",
+    email: "",
+    password: "",
+    category:'suggestion',
     dob: '',
   });
+
 
   const handleInputs = (e) => {
     setUser({ ...user, [e.target.name]: e.target.value });
   }
 
+  const handleFileInput = (e)=>{
+    if (e.target.files && e.target.files.length > 0) {
+      setSelectedImage(e.target.files[0]);
+    }  
+  }
+
+  const defaultpic = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
+
+  const onSubmit = async (e)=>{
+    e.preventDefault();
+    const isSuccess = signup(user,selectedImage);
+    if(isSuccess){
+      alert('User created Now Login');
+      navigate('/login');
+    }else{
+      alert('something went wrong');
+    }
+  }
+
   return (
-    <div className='container'>
-      <form>
+    <div className='container my-5 px-4'>
+      <img src={`${selectedImage?URL.createObjectURL(selectedImage):defaultpic}`} alt="..." 
+      className="img-thumbnail rounded mx-auto d-block"
+      style={{height:'200px',width:'200px'}}
+      />
+      <form encType='multipart/form-data'>
         <div className='p-3 mb-3'>
           <label htmlFor='profilePic'>Upload Pic</label>
-          <input type="file" id="profilePic" name="profilePic" accept="image/*"/>
+          <input type="file" id="profilePic" name="profilePic" accept="image/*"
+          onChange = {handleFileInput}
+          />
         </div>
         <div className="mb-3">
           <label htmlFor="name" className="form-label">Name</label>
@@ -40,7 +69,7 @@ export default function Signup() {
         </div>
         <div className="mb-3">
           <label htmlFor='category'>Category</label>
-          <select id='category' name='category' onChange={handleInputs}>
+          <select id='category' name='category' onChange={handleInputs} required>
             <option value="student">Student</option>
             <option value="teacher">Teacher</option>
             <option value="both student and teacher">Both Student and Teacher</option>
@@ -69,10 +98,10 @@ export default function Signup() {
             name='password'
             value={user.password}
             onChange={handleInputs}
-          />
+          /> 
         </div>
         <div className="d-grid gap-2">
-          <button className="btn btn-outline-primary" type="button" onClick={() => { }}>Sign Up</button>
+          <input type='submit' className="btn btn-outline-primary" onClick={onSubmit}/>
         </div>
       </form>
     </div>

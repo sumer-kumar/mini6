@@ -1,6 +1,6 @@
 import User from '../schema/userSchema.js'
 import jwt from 'jsonwebtoken';
-import { JWT_SECRET_KEY } from '../constants.js';
+import { DatabaseURL, JWT_SECRET_KEY, serverURL } from '../constants.js';
 
 /**
  * post-> createUser
@@ -11,7 +11,35 @@ import { JWT_SECRET_KEY } from '../constants.js';
  * get-> getQueriesOfUser
  * get-> getSuggestionsOfUser
  * put-> updateProfileImage
+ * get->getCurrentUser
  */
+
+export const getCurrentUserId = async (req,res)=>{
+    try {
+        const currentUserId = req.userId;
+        res.status(200).json({currentUserId});
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({error:e});
+    }
+}
+
+export const getCurrentUser = async (req,res)=>{
+    try{
+        const _id = req.userId;
+        const user = await User.findById(_id).select('-password');
+
+        if(!_id || !user){
+            return res.status(400).json({error:'count not find anything'});
+        }
+
+        res.status(200).json({user});
+
+    }catch(e)
+    {
+        res.status(400).json({error:e});
+    }
+}
 
 export const isAuthenticated = async (req,res)=>{
 
@@ -211,7 +239,12 @@ export const createUser = async (req,res)=>{
         if(userExist){
             res.status(400).json({message: 'user already exists'});
         }else{
-            let user = new User(req.body);
+            let user = new User(JSON.parse(req.body.user));
+
+            if(req.file!==undefined)
+            {
+                user.photo = `${serverURL}/file/${req.file.filename}`;
+            } 
             await user.save();
             console.log(user);
             res.status(200).json({message: 'user created successfully'});

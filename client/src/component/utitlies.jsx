@@ -10,3 +10,7 @@ export const getToken=()=>{
 export const logOut = ()=>{
     localStorage.removeItem('token');
 }
+
+export const getCurrUser = ()=>{
+
+}

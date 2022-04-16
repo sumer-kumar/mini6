@@ -5,8 +5,7 @@ export const uploadMultipleImage = (req,res,next)=>{
         console.log(req.files);
         if(req.files === undefined)
         {
-            console.log('esefsefs');
-            req.status(400).json({error:'select a file'});
+            res.status(400).json({error:'select a file'});
         }
         else
         {

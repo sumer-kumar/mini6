@@ -17,7 +17,7 @@ export const uploadImageMultiple = (req,res)=>{
     try {
         if(req.files === undefined)
         {
-            req.status(400).json({error:'select a file'});
+            res.status(400).json({error:'select a file'});
         }
         else
         {
@@ -55,7 +55,7 @@ export const uploadImageProfile = async (req,res)=>{
     try {
         if(req.file === undefined)
         {
-            req.status(400).json({error:'select a file'});
+            res.status(400).json({error:'select a file'});
         }
         else
         {

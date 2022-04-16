@@ -17,3 +17,46 @@
     border: 1px solid blue;
     border-radius: 3px;
 }
+
+.tag {
+    cursor: pointer;
+    border: 2px solid grey;
+    display: inline;
+}
+
+.tag:hover {
+    border: 2px solid black;
+    background-color: darkgray;
+}
+
+.like {
+    border: 1px solid blue;
+    background-color: gainsboro;
+    border-radius: 5px;
+    padding: 2px 6px;
+}
+
+.like:hover {
+    background-color: cornflowerblue;
+    cursor: pointer;
+}
+
+.liked {
+    border: 1px solid blue;
+    border-radius: 5px;
+    padding: 2px 6px;
+    background-color: cornflowerblue;
+}
+
+.liked:hover {
+    background-color: aqua;
+    cursor: pointer;
+}
+
+
+.comment {
+    border: 1px solid grey;
+    margin: 4px 10px;
+    padding: 4px 8px;
+    background-color: aliceblue;
+}

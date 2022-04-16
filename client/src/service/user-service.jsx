@@ -2,6 +2,32 @@ import axios from 'axios'
 import { getToken, saveToken } from '../component/utitlies';
 import { serverUrl } from '../constants'
 
+export const getCurrentUserId = async ()=>{
+    const token = getToken();
+    try {
+        let response = await axios.get(`${serverUrl}/getCurrentUserId`,{
+            headers:{
+                'Authorization':`Bearer ${token}`,
+            }
+        });
+        return response;
+    } catch (e) {
+        console.log(e);
+        return {status:400,error:e};
+    }
+}
+
+export const getUserById = async (id)=>{
+    try {
+        let response = await axios.get(`${serverUrl}/getUserById/${id}`);
+        console.log(response);
+        return response;
+    } catch (e) {
+        console.log(e);
+        return {status:400,error:e}
+    }
+}
+
 export const login = async (user)=>{
 
     console.log(user);
@@ -24,6 +50,24 @@ export const isAuthenticated = async ()=>{
             }
         });
         return response.data.isAuthenticated;
+    } catch (e) {
+        console.log(e);
+        return false;
+    }
+}
+
+export const signup = async (user,selectedImage)=>{
+
+    try {
+        const formData = new FormData();
+        formData.append('file',selectedImage);
+        formData.append('user',JSON.stringify(user));
+
+        let response = await axios.post(`${serverUrl}/createUser`,formData);
+
+        console.log(response);
+        return true;
+
     } catch (e) {
         console.log(e);
         return false;

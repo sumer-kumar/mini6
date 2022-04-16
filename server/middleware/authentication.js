@@ -4,8 +4,8 @@ import { JWT_SECRET_KEY } from '../constants.js';
 
 const authentication = async (req,res,next)=>{
     const {authorization} = req.headers;
-    console.log('authentication')
-
+    console.log(authorization)
+    
     if(!authorization){
         return res.status(400).json({error:'require login'});
     }

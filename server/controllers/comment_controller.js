@@ -49,7 +49,7 @@ export const postCommentByReviewId = async (req,res)=>{
     console.log(req.params);
     try{
         const _id = req.params.id;
-
+        console.log(req.body);
         //first make a model of comment
         const comment = new Comment(req.body);
         comment.author = req.userId;
