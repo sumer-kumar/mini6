@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import { useParams } from 'react-router-dom';
-import { createPost, getPostById, updatePostById } from '../../service/post-service';
+import { getPostById, updatePostById } from '../../service/post-service';
 
 export default function EditPost() {
 
@@ -8,7 +8,7 @@ export default function EditPost() {
 
     const [post, setPost] = useState({
         title: '',
-        category: '',
+        category: '', 
         body: '',
     });
 

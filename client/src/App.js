@@ -7,7 +7,8 @@ import Signup from "./component/Signup/Signup";
 import CreatePost from "./component/Post/CreatePost";
 import ShowPost from "./component/Post/ShowPost";
 import EditPost from "./component/Post/EditPost";
-import Review from "./component/Review/Review";
+import UserProfile from "./component/User/UserProfile";
+import UpdateUser from './component/User/UpdateUser';
 
 function App() {
   return (
@@ -20,11 +21,13 @@ function App() {
         <Route exact path = 'post' element = {<CreatePost/>}/>
       </Route>
       <Route exact path = '/show'>
-        <Route exact path = 'quiz' element = {<ShowQuiz/>}/>
+        <Route exact path = 'quiz/:id' element = {<ShowQuiz/>}/>
         <Route exact path = 'post/:id' element = {<ShowPost/>}/>
+        <Route exact path = 'user/:id' element = {<UserProfile/>}/>
       </Route>
       <Route exact path = '/edit'>
         <Route exact path = 'post/:id' element = {<EditPost/>}/>
+        <Route exact path = 'user' element = {<UpdateUser/>}/>
       </Route>
     </Routes>
     );

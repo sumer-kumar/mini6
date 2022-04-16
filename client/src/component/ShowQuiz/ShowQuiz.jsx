@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from 'react'
 import QuestionBlock from './QuestionBlock';
-
+import { useParams } from 'react-router-dom';
 /**
  * this quiz object will be coming from api request
  */
-import { quizData } from '../../constants';
+
+import {getQuizById} from '../../service/quiz-service'
 import QuizResult from '../QuizResult/QuizResult';
 
 export default function Quiz() {
@@ -12,14 +13,22 @@ export default function Quiz() {
     const [quiz, setQuiz] = useState({
         instructions: '',
         title: '',
-        totalTime: 1000000,
+        total_time: 1000000,
         questions: []
     });
-    const [seconds, setSeconds] = useState(quiz.totalTime * 60);
+    const [seconds, setSeconds] = useState();
+
+    const {id} = useParams();
 
     useEffect(() => {
-        setQuiz(quizData);
-        setSeconds(quizData.totalTime*60);
+        
+        const fetchQuiz = async ()=>{
+            let response = await getQuizById(id);
+            console.log(response);
+            setQuiz(response.data);
+            setSeconds(response.data.total_time*60);
+        }
+        fetchQuiz();
     }, []);
 
     const select_option = (questionIndex, optionIndex) => {
@@ -73,7 +82,7 @@ export default function Quiz() {
             <h3>{`Remaining Time : ${seconds} sec`}</h3>
             <h1>{quiz.title}</h1>
             <h4>{quiz.instructions}</h4>
-            <h6>{`Total Time : ${quiz.totalTime} mins`}</h6>
+            <h6>{`Total Time : ${quiz.total_time} mins`}</h6>
             <hr />
 
             {

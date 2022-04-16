@@ -1,14 +1,16 @@
 import React, { useState } from 'react'
+import { createQuiz } from '../../service/quiz-service';
 import QuizAddQuestion from './QuizAddQuestion'
 import QuizDetail from './QuizDetail'
 import QuizQuestionBlock from './QuizQuestionBlock'
+import {useNavigate} from 'react-router-dom'
 
 export default function Quiz() {
 
   const [quiz, setQuiz] = useState({
     title: "",
     instructions: "",
-    totalTime: 10,
+    total_time: 10,
   });
 
   const [questions, setQuestions] = useState([]);
@@ -26,16 +28,28 @@ export default function Quiz() {
     setQuestions(newQuestions);
   }
 
-  const onSubmit = (e)=>{
+  const navigate = useNavigate();
+
+  const onSubmit = async (e)=>{
     const finalQuiz = quiz;
     finalQuiz.questions = questions;
     console.log(finalQuiz);
+
+    let response = await createQuiz(finalQuiz);
+    console.log(response);
+
+    if(response.status===200){
+      alert('success');
+      navigate("/");
+    }else{
+      alert('something went wrong');
+    }
+
     /**
      * Here we will make a post api request using axios to post the quiz 
      * and will take the authorization token from the local storage 
      * and return to the home screen of the user
      */
-    
   }
 
   return (

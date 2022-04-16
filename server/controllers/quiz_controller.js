@@ -48,7 +48,7 @@ export const getQuizById = async (req,res)=>{
     try{
         const _id = req.params.id;
 
-        const quiz = await Quiz.findById(_id).select('-questions.correct_index');
+        const quiz = await Quiz.findById(_id);
 
         if(!_id || !quiz){
             return res.status(400).json({error:'could not find anything'});

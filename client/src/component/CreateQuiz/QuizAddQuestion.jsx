@@ -12,10 +12,10 @@ export default function QuizAddQuestion(params) {
 
   const [marks, setMarks] = useState(1);
 
-  const [correctIndex,setCorrectIndex] = useState(0);
+  const [correct_index,setcorrect_index] = useState(0);
   
-  const handleCorrectIndex = (e)=>{
-      setCorrectIndex(e.target.value-1)      
+  const handlecorrect_index = (e)=>{
+      setcorrect_index(e.target.value-1)      
   }
 
   const handleQuestion = (e) => {
@@ -27,18 +27,18 @@ export default function QuizAddQuestion(params) {
   }
 
   const addQuestion = ()=>{
-    options[correctIndex].isCorrect=true;
+    options[correct_index].isCorrect=true;
     const finalQuestion = {
       question:question,
       options:options,
       marks:marks,
-      correctIndex:correctIndex,
+      correct_index:correct_index,
     }
     params.addToQuestions(finalQuestion);
   }
 
   const AddToQuiz = ()=>{
-    if(correctIndex<0 || correctIndex>=options.length)
+    if(correct_index<0 || correct_index>=options.length)
     {
       alert('choose a valid correct option !!');
     }
@@ -51,7 +51,7 @@ export default function QuizAddQuestion(params) {
       })
       setOptions([])
       setMarks(1);
-      setCorrectIndex(0);
+      setcorrect_index(0);
     }
   }
 
@@ -128,13 +128,13 @@ export default function QuizAddQuestion(params) {
             />
           </div>
           <div className="mb-3">
-            <label htmlFor="correctIndex" className="form-label">correct Index</label>
+            <label htmlFor="correct_index" className="form-label">correct Index</label>
             <input type="number" className="form-control"
-              id="correctIndex"
-              placeholder='correctIndex'
-              name="correctIndex"
-              value={correctIndex+1}
-              onChange={handleCorrectIndex}
+              id="correct_index"
+              placeholder='correct_index'
+              name="correct_index"
+              value={correct_index+1}
+              onChange={handlecorrect_index}
             />
           </div>
           <div>

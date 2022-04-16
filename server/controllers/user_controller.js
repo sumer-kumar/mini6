@@ -127,6 +127,14 @@ export const deleteUser = async (req,res)=>{
 export const updateUser = async (req,res)=>{
     console.log(req.body);
     try{
+        req.body = JSON.parse(req.body.user);
+
+        
+        if(req.file!==undefined){
+            req.body.photo = `${serverURL}/file/${req.file.filename}`;
+        } 
+        console.log(req.body);
+        
         const user = await User.updateOne({_id:req.userId},req.body);
         res.status(200).json({message:'success'});
     }catch(e){
@@ -134,7 +142,7 @@ export const updateUser = async (req,res)=>{
         res.status(400).json({error:e});
     }
 }
-
+ 
 export const follow = async (req,res)=>{
     
     //we will get userId (the person who wants to follow _id) from authentication

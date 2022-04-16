@@ -72,7 +72,6 @@ export const updatePostById = async (req,res)=>{
         console.log(e);
         res.status(400).json({error:e});
     }
-
 }
 
 export const createPost = async (req,res)=>{

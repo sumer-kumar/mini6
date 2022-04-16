@@ -5,7 +5,7 @@ export default function QuestionBlock({question,index}) {
 
     let isCorrect = false;
 
-    if(question.selectedIndex!==undefined && question.selectedIndex===question.correctIndex){
+    if(question.selectedIndex!==undefined && question.selectedIndex===question.correct_index){
         isCorrect=true;
     }
 
@@ -14,7 +14,7 @@ export default function QuestionBlock({question,index}) {
         <div className='row'>
             <div className='col-12'>
                 <h4>{`${index+1}). ${question.question}`}</h4>
-                <h6>{question.selectedIndex!==undefined && question.selectedIndex===question.correctIndex?`Marks +${question.marks}`:'Marks +0'}</h6>
+                <h6>{question.selectedIndex!==undefined && question.selectedIndex===question.correct_index?`Marks +${question.marks}`:'Marks +0'}</h6>
             </div>
         <div>
             {
@@ -35,7 +35,7 @@ export default function QuestionBlock({question,index}) {
                         if(_index===question.selectedIndex){
                             res = 'wrong-selected-option'
                         }
-                        else if(_index===question.correctIndex){
+                        else if(_index===question.correct_index){
                             res = 'selected-option'
                         }
                         else{
@@ -47,7 +47,7 @@ export default function QuestionBlock({question,index}) {
                         <div 
                         style={{'cursor':'pointer'}}
                         className={`pt-2 ${res}`} key={_index}>
-                            <p>{value.option}</p>
+                            <p>{`${_index+1}). ${value.option}`}</p>
                         </div>
                     )
                 })

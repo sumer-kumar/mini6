@@ -34,12 +34,12 @@ export default function QuizDetail(params) {
                     />
                 </div>
                 <div className="mb-3">
-                    <label htmlFor="totalTime" className="form-label">totalTime</label>
+                    <label htmlFor="total_time" className="form-label">total_time</label>
                     <input type="number" className="form-control"
-                    id="totalTime"
-                    placeholder='totalTime'
-                    name="totalTime"
-                    value={params.quiz.totalTime}
+                    id="total_time"
+                    placeholder='total_time'
+                    name="total_time"
+                    value={params.quiz.total_time}
                     onChange={handleInputs}
                     />
                 </div>

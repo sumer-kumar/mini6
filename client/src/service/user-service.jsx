@@ -2,6 +2,32 @@ import axios from 'axios'
 import { getToken, saveToken } from '../component/utitlies';
 import { serverUrl } from '../constants'
 
+export const updateUser = async (user,selectedImage)=>{
+    try {
+        const token = getToken();
+        const formData = new FormData();
+
+        formData.append('user', JSON.stringify(user));
+        formData.append('file',selectedImage);
+
+        console.log(formData);
+
+        let response = await axios({
+            method:'put',
+            url:`${serverUrl}/updateUser/`,
+            data:formData,
+            headers:{
+                'Authorization': `Bearer ${token}`,
+            }
+        });
+
+        return true;
+    } catch (e) {
+        console.log(e);
+        return false;        
+    }
+}
+
 export const getCurrentUserId = async ()=>{
     const token = getToken();
     try {
@@ -27,6 +53,18 @@ export const getUserById = async (id)=>{
         return {status:400,error:e}
     }
 }
+
+export const getCurrentUserDetail = async ()=>{
+    try {
+        let response = await getCurrentUserId();
+        response = await getUserById(response.data.currentUserId);
+        console.log(response);
+        return response;
+    } catch (e) {
+        console.log(e);
+        return {status:400,error:e}        
+    }
+} 
 
 export const login = async (user)=>{
 

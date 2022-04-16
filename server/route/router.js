@@ -17,7 +17,7 @@ router.post('/createUser',upload.single('file'),createUser);
 router.post('/login',login);
 router.get('/getUserById/:id',getUserById);
 router.put('/follow/:id',authentication,follow);
-router.put('/updateUser',authentication,updateUser);
+router.put('/updateUser',authentication,upload.single('file'),updateUser);
 router.delete('/deleteUser',authentication,deleteUser);
 router.get('/getQueriesOfUser/:id',authentication,getQueriesOfUser);
 router.get('/getSuggestionsOfUser/:id',authentication,getSuggestionsOfUser);

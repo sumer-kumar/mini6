@@ -15,14 +15,19 @@ const quizSchema = new mongoose.Schema({
             type: String,
         },
         options: [{
-            type: String,
+            option:{
+                type:String,
+            },
+            isCorrect:{
+                type: mongoose.Schema.Types.Boolean,
+            },
         }],
         marks: {
             type: Number,
         },
-        correct_index: [{
+        correct_index: {
             type: Number,
-        }]
+        },
     }],
     author: {
         type: mongoose.Schema.Types.ObjectId,
@@ -32,8 +37,7 @@ const quizSchema = new mongoose.Schema({
         type: String,
     }],
     total_time: {
-        type: Date,
-        default: Date.now,
+        type: Number,
     },
     participants: [{
         userId: {
