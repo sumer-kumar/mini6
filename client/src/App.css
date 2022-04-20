@@ -22,6 +22,9 @@
     cursor: pointer;
     border: 2px solid grey;
     display: inline;
+    margin: 2px 4px 2px 0px;
+    padding: 2px 6px ;
+    border-radius: 10px;
 }
 
 .tag:hover {
@@ -59,4 +62,38 @@
     margin: 4px 10px;
     padding: 4px 8px;
     background-color: aliceblue;
+}
+
+.follow-btn {
+    border: 2px solid aliceblue;
+    border-radius: 10px;
+    margin: 4px 4px 4px 0px;
+    padding: 4px 10px;
+    background-color: aqua;
+    cursor: pointer;
+}
+
+.followed-btn {
+    background-color: dimgrey;
+}
+
+.follow-btn:hover {
+    background-color:cadetblue;
+}
+
+.toggle-btn {
+    background-color: lightcyan;
+    margin: 0px 4px;
+    border-radius: 16px;
+    padding: 4px 10px;
+    cursor: pointer;
+    margin: 4px 4px;
+}
+
+.toggle-btn:hover {
+    background-color: aqua;
+}
+
+.toggle-btn-clicked {
+    background-color: aqua;
 }

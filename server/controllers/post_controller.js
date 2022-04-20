@@ -29,7 +29,6 @@ export const deletePostById = async (req,res)=>{
     }
 }
 
-
 export const getPostById = async (req,res)=>{
     
     console.log(req.params);

@@ -2,6 +2,105 @@ import axios from 'axios'
 import { getToken, saveToken } from '../component/utitlies';
 import { serverUrl } from '../constants'
 
+export const follow = async (id)=>{
+    try {
+        let response = await axios({
+            method:'put',
+            url:`${serverUrl}/follow/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+        console.log(response);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+export const unfollow = async (id)=>{
+    try {
+        let response = await axios({
+            method:'put',
+            url:`${serverUrl}/unfollow/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+        console.log(response);
+        return true;
+    } catch (e) {
+        return false;
+    }
+}
+
+export const getPostsByUserId = async (id)=>{
+    try {
+        let response = await axios({
+            method:'get',
+            url:`${serverUrl}/getPostsByUserId/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+
+        return response;
+    } catch (e) {
+        return {status:400,error:e};
+    }
+}
+
+
+export const getQuizzesByUserId = async (id)=>{
+    try {
+        let response = await axios({
+            method:'get',
+            url:`${serverUrl}/getQuizzesByUserId/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+
+        return response;
+    } catch (e) {
+        return {status:400,error:e};
+    }
+}
+
+
+
+export const getFollowersByUserId = async (id)=>{
+    try {
+        let response = await axios({
+            method:'get',
+            url:`${serverUrl}/getFollowersByUserId/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+
+        return response;
+    } catch (e) {
+        return {status:400,error:e};
+    }
+}
+
+
+export const getFollowingsByUserId = async (id)=>{
+    try {
+        let response = await axios({
+            method:'get',
+            url:`${serverUrl}/getFollowingsByUserId/${id}`,
+            headers:{
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+
+        return response;
+    } catch (e) {
+        return {status:400,error:e};
+    }
+}
+
 export const updateUser = async (user,selectedImage)=>{
     try {
         const token = getToken();
@@ -12,7 +111,7 @@ export const updateUser = async (user,selectedImage)=>{
 
         console.log(formData);
 
-        let response = await axios({
+        await axios({
             method:'put',
             url:`${serverUrl}/updateUser/`,
             data:formData,

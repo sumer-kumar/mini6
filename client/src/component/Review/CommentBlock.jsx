@@ -1,5 +1,6 @@
 
 import React, { useEffect, useState } from 'react'
+import { Link } from 'react-router-dom';
 import { defaultProfilePic } from '../../constants'
 import { getAuthorById } from '../../service/review-service';
 
@@ -28,7 +29,7 @@ export default function CommentBlock({ comment }) {
               <img src={author.photo.length === 0 ? defaultProfilePic : author.photo}
                 style={{ height: '30px' }}
               ></img>
-              <h5>{author.name}</h5>
+              <h5><Link to={`/show/user/${author._id}`}>{author.name}</Link></h5>
               <p>{comment.body}</p>
             </div>
           </>

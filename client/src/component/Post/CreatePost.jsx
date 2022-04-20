@@ -5,7 +5,7 @@ export default function CreatePost() {
 
     const [post, setPost] = useState({
         title: '',
-        category: '',
+        category: 'suggestion',
         body: '',
     });
 

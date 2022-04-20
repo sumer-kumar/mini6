@@ -5,7 +5,7 @@ import { getMessageByConversationId, sendMessage } from '../controllers/message_
 import { createPost, deletePostById, getPostById, updatePostById } from '../controllers/post_controller.js';
 import { createQuiz, deleteQuizById, getQuizById, updateQuizById } from '../controllers/quiz_controller.js';
 import { addlike, getAuthorById, getReviewById, getReviewByPostId, getReviewByQuizId, removeLike } from '../controllers/review_controller.js';
-import { createUser, deleteUser, follow, getCurrentUser, getCurrentUserId, getQueriesOfUser, getSuggestionsOfUser, getUserById, isAuthenticated, login, updateUser } from '../controllers/user_controller.js';
+import { createUser, deleteUser, follow, getCurrentUser, getCurrentUserId, getFollowersByUserId, getFollowingsByUserId, getPostsByUserId, getQueriesOfUser, getQuizzesByUserId, getSuggestionsOfUser, getUserById, isAuthenticated, login, unfollow, updateUser } from '../controllers/user_controller.js';
 import authentication from '../middleware/authentication.js';
 import { uploadMultipleImage } from '../middleware/image_upload.js';
 import upload from '../middleware/upload.js';
@@ -17,6 +17,7 @@ router.post('/createUser',upload.single('file'),createUser);
 router.post('/login',login);
 router.get('/getUserById/:id',getUserById);
 router.put('/follow/:id',authentication,follow);
+router.put('/unfollow/:id',authentication,unfollow);
 router.put('/updateUser',authentication,upload.single('file'),updateUser);
 router.delete('/deleteUser',authentication,deleteUser);
 router.get('/getQueriesOfUser/:id',authentication,getQueriesOfUser);
@@ -24,6 +25,10 @@ router.get('/getSuggestionsOfUser/:id',authentication,getSuggestionsOfUser);
 router.get('/isAuthenticated',isAuthenticated);
 router.get('/getCurrentUser',authentication,getCurrentUser);
 router.get('/getCurrentUserId',authentication,getCurrentUserId);
+router.get('/getPostsByUserId/:id',authentication,getPostsByUserId);
+router.get('/getFollowingsByUserId/:id',authentication,getFollowingsByUserId);
+router.get('/getFollowersByUserId/:id',authentication,getFollowersByUserId);
+router.get('/getQuizzesByUserId/:id',authentication,getQuizzesByUserId);
 
 //post controller
 router.post('/createPost',authentication,upload.array('files',10),createPost);

@@ -12,255 +12,360 @@ import { DatabaseURL, JWT_SECRET_KEY, serverURL } from '../constants.js';
  * get-> getSuggestionsOfUser
  * put-> updateProfileImage
  * get->getCurrentUser
+ * get->getPostsByUserId
+ * get->getFollowingsByUserId
+ * get->getFollowersByUserId
+ * get->getQuizzesById
  */
 
-export const getCurrentUserId = async (req,res)=>{
+export const getFollowingsByUserId = async (req,res)=>{
     try {
-        const currentUserId = req.userId;
-        res.status(200).json({currentUserId});
+        const _id = req.params.id;
+        const user = await User.findById(_id).select('followings').populate('followings','name photo email');
+
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
+        }
+
+        res.status(200).json({ user });
+
     } catch (e) {
-        console.log(e);
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 }
 
-export const getCurrentUser = async (req,res)=>{
-    try{
+export const getFollowersByUserId = async (req,res)=>{
+    try {
+        const _id = req.params.id;
+        const user = await User.findById(_id).select('followers').populate('followers','name photo email');
+
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
+        }
+
+        res.status(200).json({ user });
+
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+}
+
+export const getQuizzesByUserId = async (req,res)=>{
+    try {
+        const _id = req.params.id;
+        const user = await User.findById(_id).select('quizes').populate('quizes','-questions');
+
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
+        }
+
+        res.status(200).json({ user });
+
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+}
+
+export const getPostsByUserId = async (req, res) => {
+    try {
+        const _id = req.params.id;
+        const user = await User.findById(_id).select('posts').populate('posts');
+
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
+        }
+
+        res.status(200).json({ user });
+
+    } catch (e) {
+        res.status(400).json({ error: e });
+    }
+}
+
+export const getCurrentUserId = async (req, res) => {
+    try {
+        const currentUserId = req.userId;
+        res.status(200).json({ currentUserId });
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: e });
+    }
+}
+
+export const getCurrentUser = async (req, res) => {
+    try {
         const _id = req.userId;
         const user = await User.findById(_id).select('-password');
 
-        if(!_id || !user){
-            return res.status(400).json({error:'count not find anything'});
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
         }
 
-        res.status(200).json({user});
+        res.status(200).json({ user });
 
-    }catch(e)
-    {
-        res.status(400).json({error:e});
+    } catch (e) {
+        res.status(400).json({ error: e });
     }
 }
 
-export const isAuthenticated = async (req,res)=>{
+export const isAuthenticated = async (req, res) => {
 
-    const {authorization} = req.headers;
+    const { authorization } = req.headers;
     console.log('authentication')
 
-    if(!authorization){
-        return res.status(401).json({isAuthenticated:false});
+    if (!authorization) {
+        return res.status(401).json({ isAuthenticated: false });
     }
 
-    const token = authorization.replace('Bearer ','');
+    const token = authorization.replace('Bearer ', '');
 
     try {
-        const payload = jwt.verify(token,JWT_SECRET_KEY);
+        const payload = jwt.verify(token, JWT_SECRET_KEY);
 
         console.log(`payload : `);
         console.log(payload);
 
-        const {_id} = payload;
+        const { _id } = payload;
 
-        if(!_id){
-            return res.status(401).json({isAuthenticated:false});
+        if (!_id) {
+            return res.status(401).json({ isAuthenticated: false });
         }
         const userId = await User.findById(_id).select('_id');
         req.userId = userId._id;
-        res.status(200).json({isAuthenticated:true});
+        res.status(200).json({ isAuthenticated: true });
     }
-    catch(err)
-    {
+    catch (err) {
         console.log(err);
-        return res.status(401).json({isAuthenticated:false});
+        return res.status(401).json({ isAuthenticated: false });
     }
 }
 
-export const getSuggestionsOfUser = async (req,res)=>{
+export const getSuggestionsOfUser = async (req, res) => {
     console.log(req.params);
     try {
         const _id = req.params.id;
         const posts = await User.findById(_id)
-                                .select('posts')
-                                .populate('posts');
-        
-        posts.posts = posts.posts.filter((post)=>{
-            return post.category =='suggestion';
+            .select('posts')
+            .populate('posts');
+
+        posts.posts = posts.posts.filter((post) => {
+            return post.category == 'suggestion';
         });
-    
+
         res.status(200).json(posts);
     } catch (e) {
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 }
 
-export const getQueriesOfUser = async (req,res)=>{
+export const getQueriesOfUser = async (req, res) => {
     console.log(req.params);
     try {
         const _id = req.params.id;
         const posts = await User.findById(_id)
-                                .select('posts')
-                                .populate('posts');
-        
-        posts.posts = posts.posts.filter((post)=>{
-            return post.category =='query';
+            .select('posts')
+            .populate('posts');
+
+        posts.posts = posts.posts.filter((post) => {
+            return post.category == 'query';
         });
-    
+
         res.status(200).json(posts);
     } catch (e) {
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 }
 
-export const deleteUser = async (req,res)=>{
-    
+export const deleteUser = async (req, res) => {
+
     console.log(req.userId);
 
-    try{
+    try {
 
-        await User.deleteOne({_id:req.userId});
-        res.status(200).json({message:'success'});
-    }catch(e){
+        await User.deleteOne({ _id: req.userId });
+        res.status(200).json({ message: 'success' });
+    } catch (e) {
         console.log(e);
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 }
 
-export const updateUser = async (req,res)=>{
+export const updateUser = async (req, res) => {
     console.log(req.body);
-    try{
+    try {
         req.body = JSON.parse(req.body.user);
 
-        
-        if(req.file!==undefined){
+
+        if (req.file !== undefined) {
             req.body.photo = `${serverURL}/file/${req.file.filename}`;
-        } 
+        }
         console.log(req.body);
-        
-        const user = await User.updateOne({_id:req.userId},req.body);
-        res.status(200).json({message:'success'});
-    }catch(e){
+
+        const user = await User.updateOne({ _id: req.userId }, req.body);
+        res.status(200).json({ message: 'success' });
+    } catch (e) {
         console.log(e);
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 }
- 
-export const follow = async (req,res)=>{
-    
+export const unfollow = async (req, res) => {
+
+    console.log(req.params);
+
+    try {
+        const _id = req.params.id;
+
+        // if (_id === req.userId) {
+        //     return res.status(200).json({ message: 'cannot follow himself' });
+        // }
+
+        await User.updateOne(
+            {
+                _id: req.userId,
+            },
+            {
+                $pull: {
+                    followings: _id
+                }
+            }
+        );
+
+        await User.updateOne(
+            {
+                _id: _id,
+            },
+            {
+                $pull: {
+                    followers: req.userId,
+                }
+            }
+        );
+
+        res.status(200).json({ message: 'success' });
+
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: e });
+    }
+
+}
+
+
+export const follow = async (req, res) => {
+
     //we will get userId (the person who wants to follow _id) from authentication
     //and _id (person who is followed) through params
 
     console.log(req.params);
 
-    try{
+    try {
         const _id = req.params.id;
-        
-        if(_id === req.userId){
-            return res.status(200).json({message: 'cannot follow himself'});
-        }
+
+        // if (_id === req.userId) {
+        //     return res.status(200).json({ message: 'cannot follow himself' });
+        // }
 
         await User.updateOne(
             {
-                _id : req.userId,
+                _id: req.userId,
             },
             {
-                $addToSet : {
-                    followings : [_id]
+                $addToSet: {
+                    followings: [_id]
                 }
             }
         );
 
         await User.updateOne(
             {
-                _id : _id,
+                _id: _id,
             },
             {
-                $addToSet : {
-                    followers : [req.userId],
+                $addToSet: {
+                    followers: [req.userId],
                 }
             }
         );
-        
-        res.status(200).json({message: 'success'});
 
-    }catch(e){
+        res.status(200).json({ message: 'success' });
+
+    } catch (e) {
         console.log(e);
-        res.status(400).json({error:e});
+        res.status(400).json({ error: e });
     }
 
 }
 
-export const getUserById = async (req,res)=>{
+export const getUserById = async (req, res) => {
 
     console.log(req.params);
 
-    try{
-        
+    try {
+
         const _id = req.params.id;
-        
+
         const user = await User.findById(_id).select('-password');
 
-        if(!_id || !user){
-            return res.status(400).json({error:'count not find anything'});
+        if (!_id || !user) {
+            return res.status(400).json({ error: 'count not find anything' });
         }
 
-        res.status(200).json({user});
+        res.status(200).json({ user });
 
-    }catch(e){
-        res.status(400).json({error: e});
+    } catch (e) {
+        res.status(400).json({ error: e });
     }
 }
 
-export const login = async (req,res)=>{
+export const login = async (req, res) => {
     console.log(req.body);
 
-    try{
-        const {email,password} = req.body;
-        
-        if(!email || !password){
-            return res.status(401).json({message: 'enter both email and password'});
+    try {
+        const { email, password } = req.body;
+
+        if (!email || !password) {
+            return res.status(401).json({ message: 'enter both email and password' });
         }
 
-        const user =await User.findOne({email:email});
+        const user = await User.findOne({ email: email });
 
-        if(!user || user.password != password){
-            return res.status(401).json({message: 'email or password is wrong'});
+        if (!user || user.password != password) {
+            return res.status(401).json({ message: 'email or password is wrong' });
         }
 
-        const token = jwt.sign({_id:user._id},JWT_SECRET_KEY);
-        
-        return res.status(200).json({token:token});
+        const token = jwt.sign({ _id: user._id }, JWT_SECRET_KEY);
 
-    }catch(e)
-    {
+        return res.status(200).json({ token: token });
+
+    } catch (e) {
         console.log(e);
-        res.status(400).json({error: e});
+        res.status(400).json({ error: e });
     }
 }
 
-export const createUser = async (req,res)=>{
+export const createUser = async (req, res) => {
     console.log(req.body);
 
-    try{
+    try {
 
         //check if user exists
-        const userExist = await User.findOne({email:req.body.email});
+        const userExist = await User.findOne({ email: req.body.email });
 
-        if(userExist){
-            res.status(400).json({message: 'user already exists'});
-        }else{
+        if (userExist) {
+            res.status(400).json({ message: 'user already exists' });
+        } else {
             let user = new User(JSON.parse(req.body.user));
 
-            if(req.file!==undefined)
-            {
+            if (req.file !== undefined) {
                 user.photo = `${serverURL}/file/${req.file.filename}`;
-            } 
+            }
             await user.save();
             console.log(user);
-            res.status(200).json({message: 'user created successfully'});
+            res.status(200).json({ message: 'user created successfully' });
         }
 
-    }catch(e)
-    {
+    } catch (e) {
         console.log(e);
-        res.status(400).json({error: e});
+        res.status(400).json({ error: e });
     }
 }

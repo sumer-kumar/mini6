@@ -10,6 +10,10 @@ const quizSchema = new mongoose.Schema({
     instructions: {
         type: String,
     },
+    createdOn: {
+        type: Date,
+        default: Date.now,
+    },
     questions: [{
         question: {
             type: String,
