@@ -1,9 +1,21 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom'
-import { follow, getCurrentUserId, getUserById, unfollow } from '../../service/user-service';
+import { useNavigate, useParams } from 'react-router-dom'
+import { follow, getCurrentUserId, getUserById, isAuthenticated, unfollow } from '../../service/user-service';
 import Toggle from './Toggle';
 
 export default function UserProfile() {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+      const check = async () => {
+        const isAuth = await isAuthenticated();
+        if (!isAuth) {
+          navigate('/Entry');
+        }
+      }
+      check();
+    });
+
 
   const [user, setUser] = useState();
 
@@ -28,7 +40,7 @@ export default function UserProfile() {
       setIsFollowing(response.data.user.followers.includes(res.data.currentUserId));
     }
     fetchUser();
-  }, [reload]);
+  }, [reload,id]);
 
   const handleFollow = async (e) => {
     const res = await getCurrentUserId();
@@ -36,10 +48,10 @@ export default function UserProfile() {
     if (user.followers.includes(res.data.currentUserId)) {
       //unfollow
       console.log('pressing unfollow');
-      await unfollow(res.data.currentUserId);
+      await unfollow(user._id);
     }else{
       //follow
-      await follow(res.data.currentUserId);
+      await follow(user._id);
     }
     setReload(!reload);
   }

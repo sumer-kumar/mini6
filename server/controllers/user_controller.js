@@ -16,12 +16,30 @@ import { DatabaseURL, JWT_SECRET_KEY, serverURL } from '../constants.js';
  * get->getFollowingsByUserId
  * get->getFollowersByUserId
  * get->getQuizzesById
+ * get->getUsersByName -> array
  */
 
-export const getFollowingsByUserId = async (req,res)=>{
+export const getUsersByName = async (req, res) => {
+    try {
+        const name = req.params.name;
+
+        const users = await User.find({
+            name: {
+                '$regex': name, $options: 'i'
+            }
+        }).select('name email photo');
+
+        res.status(200).json(users);
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: e });
+    }
+}
+
+export const getFollowingsByUserId = async (req, res) => {
     try {
         const _id = req.params.id;
-        const user = await User.findById(_id).select('followings').populate('followings','name photo email');
+        const user = await User.findById(_id).select('followings').populate('followings', 'name photo email');
 
         if (!_id || !user) {
             return res.status(400).json({ error: 'count not find anything' });
@@ -34,10 +52,10 @@ export const getFollowingsByUserId = async (req,res)=>{
     }
 }
 
-export const getFollowersByUserId = async (req,res)=>{
+export const getFollowersByUserId = async (req, res) => {
     try {
         const _id = req.params.id;
-        const user = await User.findById(_id).select('followers').populate('followers','name photo email');
+        const user = await User.findById(_id).select('followers').populate('followers', 'name photo email');
 
         if (!_id || !user) {
             return res.status(400).json({ error: 'count not find anything' });
@@ -50,10 +68,10 @@ export const getFollowersByUserId = async (req,res)=>{
     }
 }
 
-export const getQuizzesByUserId = async (req,res)=>{
+export const getQuizzesByUserId = async (req, res) => {
     try {
         const _id = req.params.id;
-        const user = await User.findById(_id).select('quizes').populate('quizes','-questions');
+        const user = await User.findById(_id).select('quizes').populate('quizes', '-questions');
 
         if (!_id || !user) {
             return res.status(400).json({ error: 'count not find anything' });

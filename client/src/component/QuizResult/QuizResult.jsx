@@ -1,10 +1,10 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import QuestionBlock from './QuestionBlock'
 import Review from '../Review/Review'
+import { putQuizResult } from '../../service/quiz-service';
 
 export default function QuizResult({ quiz }) {
 
-    const marks=0;
     return (
         <div className='container'>
             <div>

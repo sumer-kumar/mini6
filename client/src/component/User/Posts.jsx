@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from 'react'
 import { Link } from 'react-router-dom';
-import { serverUrl } from '../../constants';
 import { getPostsByUserId } from '../../service/user-service'
 
 export default function Post({ userId }) {

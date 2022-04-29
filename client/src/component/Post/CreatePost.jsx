@@ -1,7 +1,20 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
+import { useNavigate } from 'react-router-dom';
 import { createPost } from '../../service/post-service';
+import { isAuthenticated } from '../../service/user-service';
 
 export default function CreatePost() {
+
+    const navigate = useNavigate();
+    useEffect(() => {
+        const check = async () => {
+            const isAuth = await isAuthenticated();
+            if (!isAuth) {
+                navigate('/Entry');
+            }
+        }
+        check();
+    });
 
     const [post, setPost] = useState({
         title: '',
@@ -53,12 +66,12 @@ export default function CreatePost() {
             let len = Object.keys(e.target.files).length;
             console.log(len);
             const newImages = [];
-            for(let i=0;i<len;i++){
+            for (let i = 0; i < len; i++) {
                 newImages.push(URL.createObjectURL(e.target.files[`${i}`]));
             }
             setImages(newImages);
         }
-        else{
+        else {
             setImages([]);
         }
     }

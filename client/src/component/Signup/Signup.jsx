@@ -1,7 +1,7 @@
-import React from 'react'
+import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { signup } from '../../service/user-service';
+import { isAuthenticated, signup } from '../../service/user-service';
 
 
 let currdate = new Date();
@@ -9,6 +9,15 @@ let currdate = new Date();
 export default function Signup() {
 
   const navigate = useNavigate();
+  useEffect(() => {
+      const check = async () => {
+        const isAuth = await isAuthenticated();
+        if (isAuth) {
+          navigate('/');
+        }
+      }
+      check();
+    });
 
   const [selectedImage,setSelectedImage] = useState('');
 

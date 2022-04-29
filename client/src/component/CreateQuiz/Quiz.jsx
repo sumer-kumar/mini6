@@ -1,9 +1,10 @@
-import React, { useState } from 'react'
+import React, { useEffect, useState } from 'react'
 import { createQuiz } from '../../service/quiz-service';
 import QuizAddQuestion from './QuizAddQuestion'
 import QuizDetail from './QuizDetail'
 import QuizQuestionBlock from './QuizQuestionBlock'
-import {useNavigate} from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
+import { isAuthenticated } from '../../service/user-service';
 
 export default function Quiz() {
 
@@ -13,6 +14,17 @@ export default function Quiz() {
     total_time: 10,
   });
 
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const check = async () => {
+      const isAuth = await isAuthenticated();
+      if (!isAuth) {
+        navigate('/Entry');
+      }
+    }
+    check();
+  });
   const [questions, setQuestions] = useState([]);
 
   const addToQuestions = (question) => {
@@ -28,9 +40,7 @@ export default function Quiz() {
     setQuestions(newQuestions);
   }
 
-  const navigate = useNavigate();
-
-  const onSubmit = async (e)=>{
+  const onSubmit = async (e) => {
     const finalQuiz = quiz;
     finalQuiz.questions = questions;
     console.log(finalQuiz);
@@ -38,10 +48,10 @@ export default function Quiz() {
     let response = await createQuiz(finalQuiz);
     console.log(response);
 
-    if(response.status===200){
+    if (response.status === 200) {
       alert('success');
       navigate("/");
-    }else{
+    } else {
       alert('something went wrong');
     }
 
@@ -51,6 +61,7 @@ export default function Quiz() {
      * and return to the home screen of the user
      */
   }
+
 
   return (
     <div className='border'>
@@ -66,7 +77,7 @@ export default function Quiz() {
             </div>
           )
         })
-      }  
+      }
       <div className="border border-light p-3 mb-4">
 
         <div className="text-center">

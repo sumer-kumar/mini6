@@ -39,6 +39,18 @@ const userSchema = new mongoose.Schema({
         type: mongoose.Schema.Types.ObjectId,
         ref: 'post',
     }],
+    quizzes_given : [{
+        id : {
+            type: mongoose.Schema.Types.ObjectId,
+            ref : 'quiz'
+        },
+        marks_get : {
+            type : mongoose.Schema.Types.Number,
+        },
+        time : {
+            type : Date,
+        }
+    }],
     conversations : [{
         receiver: {
             type: mongoose.Schema.Types.ObjectId,

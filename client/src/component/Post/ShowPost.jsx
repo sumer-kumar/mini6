@@ -1,10 +1,23 @@
 import React, { useEffect, useState } from 'react'
-import { Link, useParams } from 'react-router-dom'
+import { Link, useNavigate, useParams } from 'react-router-dom'
 import { getPostById } from '../../service/post-service';
+import { isAuthenticated } from '../../service/user-service';
 import Review from '../Review/Review'
 
 
 export default function ShowPost() {
+
+  const navigate = useNavigate();
+  useEffect(() => {
+    const check = async () => {
+      const isAuth = await isAuthenticated();
+      if (!isAuth) {
+        navigate('/Entry');
+      }
+    }
+    check();
+  });
+
 
   const { id } = useParams();
 

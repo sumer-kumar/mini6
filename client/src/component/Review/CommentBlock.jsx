@@ -26,7 +26,7 @@ export default function CommentBlock({ comment }) {
         author === undefined? <></> :
           <>
             <div className='container comment'>
-              <img src={author.photo.length === 0 ? defaultProfilePic : author.photo}
+              <img src={author.photo.length !==undefined && author.photo.length === 0 ? defaultProfilePic : author.photo}
                 style={{ height: '30px' }}
               ></img>
               <h5><Link to={`/show/user/${author._id}`}>{author.name}</Link></h5>

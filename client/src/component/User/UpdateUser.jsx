@@ -1,12 +1,21 @@
 import React, { useEffect } from 'react'
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'
-import { getCurrentUserDetail, signup, updateUser } from '../../service/user-service';
+import { getCurrentUserDetail, isAuthenticated, signup, updateUser } from '../../service/user-service';
 
 
 export default function Signup() {
 
     const navigate = useNavigate();
+    useEffect(() => {
+        const check = async () => {
+          const isAuth = await isAuthenticated();
+          if (!isAuth) {
+            navigate('/Entry');
+          }
+        }
+        check();
+      });
 
     const defaultpic = 'https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png';
     const [selectedImage, setSelectedImage] = useState('');

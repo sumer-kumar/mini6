@@ -1,10 +1,70 @@
-import Post from '../schema/postSchema.js'
 import User from '../schema/userSchema.js'
-import Comment from '../schema/commentSchema.js'
 import Review from '../schema/reviewSchema.js'
 import Quiz from '../schema/quizSchema.js'
 import { deleteReviewById } from './review_controller.js'
 
+
+export const getQuizzesByTitle = async (req, res) => {
+    try {
+
+        const title = req.params.title;
+        console.log(req.params);
+        const QuizList = await Quiz.find({
+            title:{
+                $regex : `.*${title}.*`,
+                $options: 'i',
+            }
+        }).select('category title total_time createdOn instructions author tags').populate('author','name photo');
+        console.log(QuizList);
+        res.status(200).json(QuizList);
+
+    } catch (e) {
+        console.log(e);
+        res.status(400).json({ error: e });
+    }
+}
+
+export const putQuizResult = async (req,res)=>{
+
+    console.log('inside put quiz result');
+
+    try {
+        const time = Date.now();
+        // participant to quiz result 
+        await Quiz.updateOne({
+            _id:req.body.id,
+        },
+        {
+            $push : {
+                participants : {
+                    userId : req.userId,
+                    marks_get : req.body.marks_get,
+                    time : Date.now(),
+                },
+            }
+        });
+
+
+        //add this quiz details to quiz given in user schema
+        await User.updateOne({
+            _id : req.userId,
+        },
+        {
+            $push : {
+                quizzes_given : {
+                    id : req.body.id,
+                    marks_get : req.body.marks_get,
+                    time : Date.now(),
+                },
+            },
+        },);
+
+        res.status(200).send({message:'success'});
+    } catch (e){
+        console.log(e);
+        res.status(400).json({error:e});
+    }
+}
 
 export const deleteQuizById = async (req,res)=>{
     console.log(req.params);

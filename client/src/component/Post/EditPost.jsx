@@ -1,14 +1,25 @@
 import React, { useEffect, useState } from 'react'
-import { useParams } from 'react-router-dom';
+import { useNavigate, useParams } from 'react-router-dom';
 import { getPostById, updatePostById } from '../../service/post-service';
+import { isAuthenticated } from '../../service/user-service';
 
 export default function EditPost() {
+    const navigate = useNavigate();
+    useEffect(() => {
+        const check = async () => {
+            const isAuth = await isAuthenticated();
+            if (!isAuth) {
+                navigate('/Entry');
+            }
+        }
+        check();
+    });
 
-    const {id} = useParams();
+    const { id } = useParams();
 
     const [post, setPost] = useState({
         title: '',
-        category: '', 
+        category: '',
         body: '',
     });
 
@@ -61,7 +72,7 @@ export default function EditPost() {
             }
             setImages(newImages);
         }
-        else{
+        else {
             setImages([]);
         }
     }
@@ -69,23 +80,22 @@ export default function EditPost() {
     const onSubmit = async (e) => {
         e.preventDefault();
         // const res = await createPost({ post, tags, selectedImages });
-        const res = await updatePostById({id,post,tags,selectedImages});
+        const res = await updatePostById({ id, post, tags, selectedImages });
         console.log(res);
     }
 
     useEffect(() => {
         const fetchData = async () => {
             let response = await getPostById(id);
-            if (response.status == 200)
-            {
+            if (response.status == 200) {
                 let data = response.data;
-                setPost({title:data.title,category:data.category,body:data.body});
+                setPost({ title: data.title, category: data.category, body: data.body });
                 setTags(data.tags);
                 setImages(data.photos);
             }
         }
         fetchData();
-    },[]);
+    }, []);
 
     return (
         <div className='container my-5 px-5'>

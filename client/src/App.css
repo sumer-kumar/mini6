@@ -73,6 +73,17 @@
     cursor: pointer;
 }
 
+.no-link {
+    text-decoration: none;
+    color: inherit;
+}
+
+.no-link:hover{
+    text-decoration: none;
+    color: inherit;
+}
+
+
 .followed-btn {
     background-color: dimgrey;
 }
