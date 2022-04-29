@@ -3,6 +3,8 @@ import QuestionBlock from './QuestionBlock'
 import Review from '../Review/Review'
 
 export default function QuizResult({ quiz }) {
+
+    const marks=0;
     return (
         <div className='container'>
             <div>

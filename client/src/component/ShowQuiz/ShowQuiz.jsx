@@ -14,7 +14,8 @@ export default function Quiz() {
         instructions: '',
         title: '',
         total_time: 1000000,
-        questions: []
+        questions: [],
+        marksObtained:0,
     });
     const [seconds, setSeconds] = useState();
 
@@ -56,9 +57,10 @@ export default function Quiz() {
 
     const onSubmit = ()=>{
         setQuiz({...quiz,['marksObtained']:calculateMarks()});
+        quiz.marksObtained = calculateMarks();
         clearInterval(timer);
         alert('result submitted');
-        console.log(quiz.marksObtained);
+        console.log('marks : ',calculateMarks());
         setQuizDone(true);
         /**
          * we will make a post request to the server to check and return the quiz with marks
@@ -68,7 +70,7 @@ export default function Quiz() {
     const calculateMarks = ()=>{
         let marks = 0;
         quiz.questions.forEach((value)=>{
-            marks += value.selectedIndex!==undefined && value.selectedIndex===value.correctIndex?value.marks:0;
+            marks += value.selectedIndex!==undefined && value.selectedIndex===value.correct_index?value.marks:0;
         });
         return marks;
     }
