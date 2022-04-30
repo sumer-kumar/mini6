@@ -19,7 +19,6 @@ import Entry from "./component/Entry/Entry";
 function App() {
   return (
     <>
-      <Navbar />
       <Routes>
         <Route exact path="/" element={<Home />} />
         <Route exact path='/login' element={<Login />} />

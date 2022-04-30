@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate, useResolvedPath } from 'react-router-dom';
 import { getUsersByName, isAuthenticated } from '../../service/user-service';
 import { Link } from 'react-router-dom'
+import Navbar from '../Home/Navbar';
 
 export default function SearchUser() {
 
@@ -14,7 +15,7 @@ export default function SearchUser() {
             }
         }
         check();
-    });
+    },[]);
 
 
     const [name, setName] = useState();
@@ -33,6 +34,7 @@ export default function SearchUser() {
 
     return (
         <>
+            <Navbar/>
             <div className='container my-4'>
                 <label htmlFor="name" className="form-label">Enter Name of User</label>
                 <input type="text" className="form-control"

@@ -5,6 +5,7 @@ import QuizDetail from './QuizDetail'
 import QuizQuestionBlock from './QuizQuestionBlock'
 import { useNavigate } from 'react-router-dom'
 import { isAuthenticated } from '../../service/user-service';
+import Navbar from '../Home/Navbar';
 
 export default function Quiz() {
 
@@ -14,6 +15,7 @@ export default function Quiz() {
     total_time: 10,
   });
 
+  
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -24,7 +26,7 @@ export default function Quiz() {
       }
     }
     check();
-  });
+  },[]);
   const [questions, setQuestions] = useState([]);
 
   const addToQuestions = (question) => {
@@ -64,27 +66,30 @@ export default function Quiz() {
 
 
   return (
-    <div className='border'>
-      <QuizDetail quiz={quiz} setQuiz={setQuiz} />
-      <hr />
-      <QuizAddQuestion quiz={quiz} setQuiz={setQuiz} addToQuestions={addToQuestions} />
-      <hr />
-      {
-        questions.map((value, index) => {
-          return (
-            <div key={index}>
-              <QuizQuestionBlock question={value} deleteQuestion={deleteQuestion} />
-            </div>
-          )
-        })
-      }
-      <div className="border border-light p-3 mb-4">
+    <>
+      <Navbar />
+      <div className='border'>
+        <QuizDetail quiz={quiz} setQuiz={setQuiz} />
+        <hr />
+        <QuizAddQuestion quiz={quiz} setQuiz={setQuiz} addToQuestions={addToQuestions} />
+        <hr />
+        {
+          questions.map((value, index) => {
+            return (
+              <div key={index}>
+                <QuizQuestionBlock question={value} deleteQuestion={deleteQuestion} />
+              </div>
+            )
+          })
+        }
+        <div className="border border-light p-3 mb-4">
 
-        <div className="text-center">
-          <button type="button" onClick={onSubmit} className="btn btn-outline-primary">Submit Quiz</button>
+          <div className="text-center">
+            <button type="button" onClick={onSubmit} className="btn btn-outline-primary">Submit Quiz</button>
+          </div>
+
         </div>
-
       </div>
-    </div>
+    </>
   )
 }

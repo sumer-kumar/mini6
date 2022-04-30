@@ -1,11 +1,14 @@
 import React, { useEffect, useState } from 'react'
 import { Link, useNavigate, useParams } from 'react-router-dom'
-import { getPostById } from '../../service/post-service';
-import { isAuthenticated } from '../../service/user-service';
+import { deletePostById, getPostById } from '../../service/post-service';
+import { getCurrentUserId, isAuthenticated } from '../../service/user-service';
+import Navbar from '../Home/Navbar';
 import Review from '../Review/Review'
 
 
 export default function ShowPost() {
+
+  const [currentUserId,setCurrentUserId] = useState();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -14,9 +17,14 @@ export default function ShowPost() {
       if (!isAuth) {
         navigate('/Entry');
       }
+
+      const res = await getCurrentUserId();
+      console.log(res);
+      setCurrentUserId(res.data.currentUserId);
     }
     check();
-  });
+
+  },[]);
 
 
   const { id } = useParams();
@@ -39,16 +47,39 @@ export default function ShowPost() {
     const fetchData = async () => {
       let response = await getPostById(id);
       if (response.status == 200) {
+        console.log(response);
         setPost(response.data);
       }
     }
     fetchData();
   }, []);
 
+  const onClickEdit = async (e)=>{
+    navigate(`/edit/post/${post._id}`);
+  }
+
+  const onCLickDelete = async (e)=>{
+
+    const res = await deletePostById(post._id);
+    if(res.status===200)
+    navigate('/');
+    else
+    alert('cannot delete');
+  }
+
   return (
     <>
+      <Navbar />
       <div className='container my-4'>
         <h1>{post.title}</h1>
+        {
+          currentUserId!==undefined && post!==undefined && currentUserId===post.author._id? 
+          <>
+          <button onClick={onClickEdit} className='btn btn-primary m-1' >Edit</button>
+          <button onClick={onCLickDelete} className='btn btn-danger m-1' > Delete</button>
+          </>
+          : <></>
+        }
         <h6>{new Date(post.createdOn).toLocaleDateString('en-US')}</h6>
         <img src={`${post.author.photo}`} style={{ height: '20px' }}></img>
         <h6><Link to={`/show/user/${post.author._id}`}>{post.author.name}</Link></h6>

@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react'
 import { getQuizzesByTitle } from '../../service/quiz-service';
 import { Link, useNavigate } from 'react-router-dom'
 import { isAuthenticated } from '../../service/user-service';
+import Navbar from '../Home/Navbar';
 
 export default function SearchQuiz() {
     const navigate = useNavigate();
@@ -13,7 +14,7 @@ export default function SearchQuiz() {
             }
         }
         check();
-    });
+    },[]);
 
     const [Quizzes, setQuizzes] = useState();
     const [title, setTitle] = useState("");
@@ -31,6 +32,7 @@ export default function SearchQuiz() {
     }
     return (
         <>
+            <Navbar />
             <div className='container my-4'>
                 <label htmlFor="title" className="form-label">Enter Title of Quiz</label>
                 <input type="text" className="form-control"

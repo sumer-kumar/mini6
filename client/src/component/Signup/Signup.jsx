@@ -17,7 +17,7 @@ export default function Signup() {
         }
       }
       check();
-    });
+    },[]);
 
   const [selectedImage,setSelectedImage] = useState('');
 

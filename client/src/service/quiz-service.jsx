@@ -2,6 +2,22 @@ import axios from "axios";
 import { getToken } from "../component/utitlies";
 import { serverUrl } from "../constants";
 
+export const deleteQuizById = async (id) => {
+    
+    try {
+        let response = await axios.delete(`${serverUrl}/deleteQuizById/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+        return response;
+    } catch (e) {
+        console.log(e);
+        return { data: { status: 400 }, error: e };
+    }
+}
+
+
 export const getQuizzesByTitle = async (title) => {
     
     try {

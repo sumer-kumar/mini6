@@ -5,21 +5,27 @@ import { useNavigate, useParams } from 'react-router-dom';
  * this quiz object will be coming from api request
  */
 
-import { getQuizById, putQuizResult } from '../../service/quiz-service'
+import { deleteQuizById, getQuizById, putQuizResult } from '../../service/quiz-service'
 import QuizResult from '../QuizResult/QuizResult';
-import { isAuthenticated } from '../../service/user-service';
+import { getCurrentUserId, isAuthenticated } from '../../service/user-service';
+import Navbar from '../Home/Navbar';
 
 export default function Quiz() {
     const navigate = useNavigate();
+    const [currentUserId, setCurrentUserId] = useState();
+
     useEffect(() => {
         const check = async () => {
             const isAuth = await isAuthenticated();
             if (!isAuth) {
                 navigate('/Entry');
             }
+            const res = await getCurrentUserId();
+            console.log(res);
+            setCurrentUserId(res.data.currentUserId);
         }
         check();
-    });
+    }, []);
 
 
     const [quiz, setQuiz] = useState({
@@ -89,8 +95,26 @@ export default function Quiz() {
         return marks;
     }
 
+    const onCLickDelete = async (e) => {
+
+        const res = await deleteQuizById(quiz._id);
+        if (res.status === 200)
+            navigate('/');
+        else
+            alert('cannot delete');
+    }
+
+
     return (
         <>
+            {
+                currentUserId !== undefined && quiz !== undefined && currentUserId === quiz.author._id ?
+                    <>
+                        <button onClick={onCLickDelete} className='btn btn-danger m-1' > Delete</button>
+                    </>
+                    : <></>
+            }
+            <Navbar />
             {
                 quizDone === true ? <QuizResult quiz={quiz} /> :
 

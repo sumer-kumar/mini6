@@ -37,7 +37,7 @@ router.get('/getPostById/:id',authentication,getPostById);
 router.put('/updatePostById/:id',authentication,upload.array('files',10),updatePostById);
 router.delete('/deletePostById/:id',authentication,deletePostById);
 router.get('/getRecentPost',authentication,getRecentPosts);
-router.get('/getPostsByTitle/:title',authentication,getPostsByTitle);
+router.get('/getPostsByTitle/:title/:category',authentication,getPostsByTitle);
 
 //reivew controller
 router.get('/getReviewByPostId/:id',authentication,getReviewByPostId);

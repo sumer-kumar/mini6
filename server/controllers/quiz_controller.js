@@ -76,6 +76,11 @@ export const deleteQuizById = async (req,res)=>{
             await deleteReviewById(quiz.reviews);
 
         await Quiz.deleteOne({_id:_id,author:req.userId});
+        await User.updateOne({_id : req.userId},{
+            $pull : {
+                quizes : req._id,
+            }
+        })
         res.status(200).json({message:'success'});
     }catch(e){
         console.log(e);

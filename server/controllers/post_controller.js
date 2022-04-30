@@ -17,17 +17,32 @@ import { serverURL } from '../constants.js'
 export const getPostsByTitle = async (req, res) => {
     try {
 
-        const title = req.params.title;
         console.log(req.params);
-        const postList = await Post.find({
-            title:{
-                $regex : `.*${title}.*`,
-                $options: 'i',
-            }
-        }).select('category title createdOn body author tags').populate('author','name photo');
-        console.log(postList);
-        res.status(200).json(postList);
+        const title = req.params.title;
+        const category = req.params.category;
 
+        let postList;
+        if(category=='2'){
+            postList = await Post.find({
+                title:{
+                    $regex : `.*${title}.*`,
+                    $options: 'i',
+                }
+            }).select('category title createdOn body author tags').populate('author','name photo');
+            console.log(postList);
+        }
+        else{
+            postList = await Post.find({
+                title:{
+                    $regex : `.*${title}.*`,
+                    $options: 'i',
+                },
+                category : category=='0'?'query':'suggestion',
+            }).select('category title createdOn body author tags').populate('author','name photo');
+            console.log(postList);            
+        }
+        
+        res.status(200).json(postList);
     } catch (e) {
         console.log(e);
         res.status(400).json({ error: e });
@@ -51,6 +66,7 @@ export const getRecentPosts = async (req, res) => {
 export const deletePostById = async (req, res) => {
     console.log(req.params);
     try {
+        
         const _id = req.params.id;
         const post = await Post.findOne({ _id: _id, author: req.userId });
 
@@ -58,6 +74,11 @@ export const deletePostById = async (req, res) => {
             await deleteReviewById(post.reviews);
 
         await Post.deleteOne({ _id: _id, author: req.userId });
+        await User.updateOne({_id : req.userId},{
+            $pull : {
+                posts : req._id,
+            }
+        })
         res.status(200).json({ message: 'success' });
     } catch (e) {
         console.log(e);

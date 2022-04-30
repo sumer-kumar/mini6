@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react'
 import { useNavigate } from 'react-router-dom';
+import { isAuthenticated } from '../../service/user-service';
 import Navbar from './Navbar'
 import RecentPost from './RecentPost'
 
@@ -14,10 +15,11 @@ export default function Home() {
           }
         }
         check();
-      });
+      },[]);
       
     return (
         <>
+        <Navbar/>
             <div className="container">
                 <h2>Recents Posts</h2>
                 <RecentPost />

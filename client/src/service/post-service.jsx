@@ -2,11 +2,25 @@ import axios from "axios";
 import { getToken } from "../component/utitlies";
 import { serverUrl } from "../constants";
 
-
-export const getPostsByTitle = async (title) => {
+export const deletePostById = async (id) => {
     
     try {
-        let response = await axios.get(`${serverUrl}/getPostsByTitle/${title}`, {
+        let response = await axios.delete(`${serverUrl}/deletePostById/${id}`, {
+            headers: {
+                'Authorization': `Bearer ${getToken()}`,
+            }
+        });
+        return response;
+    } catch (e) {
+        console.log(e);
+        return { data: { status: 400 }, error: e };
+    }
+}
+
+export const getPostsByTitle = async (title,category) => {
+    
+    try {
+        let response = await axios.get(`${serverUrl}/getPostsByTitle/${title}/${category}`, {
             headers: {
                 'Authorization': `Bearer ${getToken()}`,
             }
