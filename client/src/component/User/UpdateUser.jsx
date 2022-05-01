@@ -67,8 +67,8 @@ export default function Signup() {
         e.preventDefault();
         const isSuccess = await updateUser(user, selectedImage);
         if (isSuccess) {
-            alert('User created Now Login');
-            // navigate('/login');
+            alert('User updated');
+            navigate('/');
         } else {
             alert('something went wrong');
         }

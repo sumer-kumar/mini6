@@ -80,6 +80,8 @@ export default function CreatePost() {
     const onSubmit = async (e) => {
         e.preventDefault();
         const res = await createPost({ post, tags, selectedImages });
+
+        navigate('/');
     }
 
     return (

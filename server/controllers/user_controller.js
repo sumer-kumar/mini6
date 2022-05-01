@@ -233,9 +233,9 @@ export const unfollow = async (req, res) => {
     try {
         const _id = req.params.id;
 
-        // if (_id === req.userId) {
-        //     return res.status(200).json({ message: 'cannot follow himself' });
-        // }
+        if (_id === req.userId) {
+            return res.status(200).json({ message: 'cannot follow himself' });
+        }
 
         await User.updateOne(
             {
@@ -279,9 +279,9 @@ export const follow = async (req, res) => {
     try {
         const _id = req.params.id;
 
-        // if (_id === req.userId) {
-        //     return res.status(200).json({ message: 'cannot follow himself' });
-        // }
+        if (_id === req.userId) {
+            return res.status(200).json({ message: 'cannot follow himself' });
+        }
 
         await User.updateOne(
             {

@@ -82,6 +82,8 @@ export default function EditPost() {
         // const res = await createPost({ post, tags, selectedImages });
         const res = await updatePostById({ id, post, tags, selectedImages });
         console.log(res);
+
+        navigate('/');
     }
 
     useEffect(() => {

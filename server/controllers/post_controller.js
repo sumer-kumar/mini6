@@ -52,7 +52,7 @@ export const getPostsByTitle = async (req, res) => {
 export const getRecentPosts = async (req, res) => {
 
     try {
-        const postList = await Post.find().sort({ createdOn: 1 }).limit(20);
+        const postList = await Post.find().sort({ createdOn: -1 }).limit(20);
 
         console.log(postList);
 

@@ -11,7 +11,6 @@ import UserProfile from "./component/User/UserProfile";
 import UpdateUser from './component/User/UpdateUser';
 import Home from "./component/Home/Home";
 import SearchPost from "./component/Search/SearchPost";
-import Navbar from "./component/Home/Navbar";
 import SearchUser from "./component/Search/SearchUser";
 import SearchQuiz from "./component/Search/SearchQuiz";
 import Entry from "./component/Entry/Entry";
@@ -38,10 +37,10 @@ function App() {
         </Route>
         <Route exact path='/search'>
           <Route exact path='post' element={<SearchPost />} />
-          <Route exact path='user' element={<SearchUser/>} />
-          <Route exact path='quiz' element={<SearchQuiz/>} />
+          <Route exact path='user' element={<SearchUser />} />
+          <Route exact path='quiz' element={<SearchQuiz />} />
         </Route>
-        <Route exact path = '/entry' element={<Entry/>}/>
+        <Route exact path='/entry' element={<Entry />} />
       </Routes>
     </>
   );
