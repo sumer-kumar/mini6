@@ -1,9 +1,6 @@
 import React, { useEffect, useState } from 'react'
 import QuestionBlock from './QuestionBlock';
 import { useNavigate, useParams } from 'react-router-dom';
-/**
- * this quiz object will be coming from api request
- */
 
 import { deleteQuizById, getQuizById, putQuizResult } from '../../service/quiz-service'
 import QuizResult from '../QuizResult/QuizResult';

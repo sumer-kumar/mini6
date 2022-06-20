@@ -66,7 +66,6 @@ router.post('/sendMessage/:id',authentication,sendMessage);
 router.get('/getMessageByConversationId/:id',authentication,getMessageByConversationId);
 
 //image contorller
-//image controlling here
 router.post('/upload/profile',authentication,upload.single('file'),uploadImageProfile);
 router.get('/file/:filename',getImage);
 
